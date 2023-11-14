@@ -4,7 +4,10 @@ import {
 import { useFrame } from '@react-three/fiber'
 import { useRef, useState } from 'react'
 
-const icon_lut = {
+interface lut {
+  [key: string]: string
+}
+const icon_lut: lut = {
   "github": "",
   "github2": "",
   "python": "",
@@ -17,7 +20,7 @@ const icon_lut = {
 }
 
 interface IconProps {
-  icon: "github" | "python" | "cli",
+  icon: string,
   position: [number, number, number],
   rotation?: [number, number, number],
   visible?: boolean,

@@ -15,7 +15,33 @@ import Project from './components/Project';
 
 function App() {
 
-  const [portfolioData, setPortfolioData] = useState(null)
+  interface portfolioDataT {
+    id: {
+      N: string
+    },
+    orderIdx: {
+      N: string
+    },
+    projectHeading: {
+      S: string
+    },
+    projectSubtitle: {
+      S: string
+    },
+    projectDescription: {
+      S: string
+    },
+    projectLink: {
+      S: string
+    },
+    projectIconsi: {
+      SS: [string]
+    },
+    projectPicUrl: {
+      S: string
+    }
+  }
+  const [portfolioData, setPortfolioData] = useState<null | portfolioDataT[]>(null)
 
   useEffect(() => {
     axios({
@@ -26,7 +52,10 @@ function App() {
       }
     })
       .then(function(response) {
-        setPortfolioData(JSON.parse(response["data"]["body"])["Items"].sort((a, b) => {
+        interface item {
+          orderIdx: { N: string }
+        }
+        setPortfolioData(JSON.parse(response["data"]["body"])["Items"].sort((a: item, b: item) => {
           return parseInt(a.orderIdx.N, 10) - parseInt(b.orderIdx.N, 10)
         }));
       })

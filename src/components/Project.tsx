@@ -39,25 +39,6 @@ interface ProjectProps {
   yOffset: number
 }
 
-function addNewlines(text: string, maxLen: number) {
-  let formattedText = ""
-  const words = text.split(' ')
-  let lineLen = 0
-  let tmpLine: Array<string> = []
-  for (const word of words) {
-    if (lineLen + (tmpLine.length - 1) <= maxLen) {
-      tmpLine.push(word)
-      lineLen += word.length
-    } else {
-      formattedText += tmpLine.join(' ') + '\n'
-      lineLen = 0
-      tmpLine = [word]
-    }
-  }
-  formattedText += tmpLine.join(' ')
-  return formattedText
-}
-
 function Project({ project, yOffset }: ProjectProps) {
 
   const { projectHeading, projectSubtitle, projectLink, projectIcons, projectPicUrl, projectDescription } = project
