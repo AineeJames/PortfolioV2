@@ -1,0 +1,68 @@
+.contact-form-container {
+  font-family: 'Space Mono', monospace;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  width: 1100px;
+  margin: auto;
+  border: 3px solid #222;
+  box-sizing: border-box;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.name-inputs {
+  font-family: 'Space Mono', monospace;
+  display: flex;
+}
+
+.input-field {
+  font-family: 'Space Mono', monospace;
+  width: 100%;
+  padding: 16px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  margin-right: 16px;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  resize: none;
+}
+
+.input-field:last-child {
+  margin-right: 0;
+}
+
+textarea {
+  width: 100%;
+  height: 200px;
+  padding: 8px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  background-color: #555;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  resize: vertical;
+}
+
+.submit-button {
+  font-family: 'Space Mono', monospace;
+  padding: 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  width: 200px
+}
+
+.submit-button:hover {
+  background-color: #0056b3;
+}
+

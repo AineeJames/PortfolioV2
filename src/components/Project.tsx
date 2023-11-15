@@ -97,7 +97,7 @@ function Project({ project, yOffset }: ProjectProps) {
       </Text3D>
       <Text3D
         font={"/SpaceMonoItalic.json"}
-        position={[xOffset, yOffset - 0.4, -1]}
+        position={[xOffset + 0.05, yOffset - 0.45, -1]}
         rotation={[-0.4, 0, 0]}
         size={0.2}
       >

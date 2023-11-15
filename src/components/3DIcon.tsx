@@ -17,6 +17,8 @@ const icon_lut: lut = {
   "react": "",
   "apple": "",
   "aws": "",
+  "wave": "",
+  "email": ""
 }
 
 interface IconProps {
