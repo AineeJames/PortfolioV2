@@ -14,7 +14,7 @@ function LandingWelcome() {
         rotation={[0.4, 0.4, 0]}
         size={0.5}
       >
-        {"Hi! Im'm"}
+        {"Hi! I'm"}
         <meshStandardMaterial color={"#888"} />
       </Text3D>
       <Text3D
