@@ -1,7 +1,9 @@
 import { Html, Text3D } from "@react-three/drei"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './Contact.css'
 import Icon from "./3DIcon";
+import axios from "axios";
+import { sub } from "three/examples/jsm/nodes/Nodes.js";
 
 interface ContactFormState {
   firstName: string;
@@ -12,12 +14,36 @@ interface ContactFormState {
 
 function Contact({ yOffset }: { yOffset: number }) {
 
-  const [formState, setFormState] = useState<ContactFormState>({
+  const defaultFormState: ContactFormState = {
     firstName: "",
     lastName: "",
     email: "",
     message: ""
-  })
+  }
+
+  const [formState, setFormState] = useState<ContactFormState>(defaultFormState)
+  const [submitColor, setSubmitColor] = useState<string>("#007bff")
+  const [canSubmit, setCanSubmit] = useState<boolean>(false)
+  const [submitStatus, setSubmitStatus] = useState<null | string>(null)
+
+  useEffect(() => {
+    setCanSubmit(() => {
+      for (const key in formState) {
+        if (formState[key] === "") return false
+      }
+      return true
+    })
+  }, [formState])
+
+  useEffect(() => {
+    if (submitStatus !== null) {
+      (async () => {
+        await new Promise(resolve => setTimeout(resolve, 5000));
+        setSubmitStatus(null)
+        setSubmitColor("#007bff")
+      })();
+    }
+  }, [submitStatus])
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -27,8 +53,35 @@ function Contact({ yOffset }: { yOffset: number }) {
   };
 
   const handleSubmit = (e: React.FormEvent): void => {
-    e.preventDefault();
-    console.log('Form submitted:', formState);
+    if (canSubmit) {
+      setSubmitStatus("Submitting...")
+      e.preventDefault();
+      axios.post("https://xov7mdqakc.execute-api.us-west-2.amazonaws.com/default/submitContactForm", formState)
+        .then((response) => {
+          let submitStatus: null | number = null
+          if (response.status === 200) {
+            submitStatus = 200
+            setFormState(defaultFormState)
+            setCanSubmit(false)
+            setSubmitStatus("Successfully submitted!")
+          } else {
+            submitStatus = response.status
+            setSubmitStatus(`Could not submit, ${response.status}.`)
+          }
+          setSubmitColor(() => {
+            if (submitStatus === null) return "#007bff"
+            else if (submitStatus === 200) return "#40a020"
+            else return "#ae0101"
+          })
+        })
+        .catch(() => {
+          setSubmitStatus("Could not submit, try again.")
+          setSubmitColor("#ae0101")
+        })
+    } else {
+      setSubmitStatus("There are missing fields.")
+      setSubmitColor("#ae0101")
+    }
   };
 
   return (
@@ -105,9 +158,12 @@ function Contact({ yOffset }: { yOffset: number }) {
             />
           </div>
 
-          <button type="submit" onClick={handleSubmit} className="submit-button">
-            Submit
-          </button>
+          <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
+            <button type="submit" onClick={handleSubmit} className="submit-button" style={{ background: submitColor }}>
+              Submit
+            </button>
+            {submitStatus && <p style={{ marginLeft: 20 }}>{submitStatus}</p>}
+          </div>
         </div>
       </Html >
     </>
