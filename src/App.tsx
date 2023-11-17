@@ -5,7 +5,7 @@ import {
   Lightformer,
   Environment,
 } from '@react-three/drei'
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 import ScrollPanCam from './components/ScrollPanCam';
