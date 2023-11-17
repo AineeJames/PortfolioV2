@@ -104,19 +104,15 @@ function App() {
       })
   }, [])
 
-  function getRandomPosition(min: number, max: number): [number, number, number] {
-    const x = Math.random() * (max - min) + min;
-    const y = Math.random() * (max - min) + min;
-    const z = Math.random() * (max - min) + min;
+  function getRandomPosition(minX: number, maxX: number, minY: number, maxY: number, minZ: number, maxZ: number): [number, number, number] {
+    const x = Math.random() * (maxX - minX) + minX;
+    const y = Math.random() * (maxY - minY) + minY;
+    const z = Math.random() * (maxZ - minZ) + minZ;
     return [x, y, z];
   }
   const starPositions: Array<[number, number, number]> = [];
-  for (let i = 0; i < 2000; i++) {
-    const randomPosition = getRandomPosition(-50, 50);
-    starPositions.push(randomPosition);
-  }
-  for (let i = 0; i < 50; i++) {
-    const randomPosition = getRandomPosition(-20, 20);
+  for (let i = 0; i < 500; i++) {
+    const randomPosition = getRandomPosition(-15, 15, 10, -55, -10, -3);
     starPositions.push(randomPosition);
   }
 
