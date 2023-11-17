@@ -9,6 +9,7 @@ interface ContactFormState {
   lastName: string;
   email: string;
   message: string;
+  [key: string]: string;
 }
 
 function Contact({ yOffset }: { yOffset: number }) {
