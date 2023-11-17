@@ -104,7 +104,7 @@ function Project({ project, yOffset }: ProjectProps) {
         {projectSubtitle["S"]}
         <meshStandardMaterial color={"#123"} />
       </Text3D>
-      {projectIcons && projectIcons["SS"].map((icon, idx) => <Icon icon={icon} size={0.25} position={[xOffset, yOffset - 0.8 - (0.4 * idx), -1]} rotation={[0.2, 0.2, 0]} color="#333" />)}
+      {projectIcons && projectIcons["SS"].map((icon, idx) => <Icon key={idx} icon={icon} size={0.25} position={[xOffset, yOffset - 0.8 - (0.4 * idx), -1]} rotation={[0.2, 0.2, 0]} color="#333" />)}
       {imgUrl &&
         <Center right bottom position={[xOffset + 0.4, yOffset - 0.5, -2]}>
           <Image

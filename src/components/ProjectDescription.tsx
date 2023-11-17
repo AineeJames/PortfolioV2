@@ -36,10 +36,12 @@ function parseDescription(text: string, offset: [number, number, number]): React
   const elemArray: ReactNode[] = []
   let yDisplacement = 0
   const lines = text.split("\n")
+  let key = 0
   for (const line of lines) {
     if (line[0] === '#') {
       elemArray.push(
         <Text3D
+          key={key}
           font={"/SpaceMonoBold.json"}
           position={[offset[0], offset[1] + yDisplacement, offset[2]]}
           height={0}
@@ -51,11 +53,12 @@ function parseDescription(text: string, offset: [number, number, number]): React
       )
     } else if (line[0] === "!") {
       elemArray.push(
-        <Link url={line.substring(1, text.length)} pos={[offset[0], offset[1] + yDisplacement, offset[2]]} />
+        <Link key={key} url={line.substring(1, text.length)} pos={[offset[0], offset[1] + yDisplacement, offset[2]]} />
       )
     } else {
       elemArray.push(
         <Text3D
+          key={key}
           font={"/SpaceMonoRegular.json"}
           position={[offset[0], offset[1] + yDisplacement, offset[2]]}
           height={0}
@@ -67,6 +70,7 @@ function parseDescription(text: string, offset: [number, number, number]): React
       )
     }
     yDisplacement -= 0.3
+    key += 1
   }
   return elemArray
 }
