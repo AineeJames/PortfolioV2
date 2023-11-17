@@ -5,7 +5,7 @@ import {
   Lightformer,
   Environment,
 } from '@react-three/drei'
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import axios from 'axios';
 
 import ScrollPanCam from './components/ScrollPanCam';
@@ -71,10 +71,12 @@ function App() {
   const [bioData, setBioData] = useState<null | bioDataT>(null)
 
   useEffect(() => {
-    (async () => {
-      await new Promise(resolve => setTimeout(resolve, 2000));
-      setWebsiteLoaded(true)
-    })();
+    if (portfolioData !== null) {
+      (async () => {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        setWebsiteLoaded(true)
+      })()
+    }
   }, [portfolioData])
 
   useEffect(() => {
@@ -116,27 +118,29 @@ function App() {
     starPositions.push(randomPosition);
   }
 
-  return websiteLoaded ? (
+  return (
     <>
-      <Canvas orthographic camera={{ position: [-2, 2, 5], zoom: 80 }} gl={{ preserveDrawingBuffer: true }} style={{ background: "black" }}>
-        {starPositions.map((position, key) => { return (<Star position={position} key={key} />) })}
-        <LandingWelcome />
-        {bioData && <Biography bio={bioData} yOffset={-6.5} />}
-        {portfolioData && portfolioData.map((project, idx: number) => { return (<Project project={project} key={project["id"]["N"]} yOffset={-(idx * 8) - 12} />) })}
-        {portfolioData && <Contact yOffset={-(portfolioData.length * 8) - 10} />}
-        <Environment resolution={32}>
-          <group rotation={[0, 0, 0]}>
-            <Lightformer intensity={20} rotation-x={Math.PI / 2} position={[0, 5, -9]} scale={[10, 10, 1]} />
-            <Lightformer intensity={20} position={[0, 5, 9]} scale={[10, 10, 1]} />
-            <Lightformer intensity={20} position={[0, 0, 0]} scale={[1, 1, 1]} />
-            <Lightformer type="ring" intensity={2} rotation-y={Math.PI / 2} position={[0, 0, 10]} scale={10} />
-          </group>
-        </Environment>
-        <ScrollPanCam />
-      </Canvas>
+      {!websiteLoaded ? <LoadingView /> : (
+        <>
+          <Canvas orthographic camera={{ position: [-2, 2, 5], zoom: 80 }} style={{ background: "black" }}>
+            {starPositions.map((position, key) => { return (<Star position={position} key={key} />) })}
+            <LandingWelcome />
+            {bioData && <Biography bio={bioData} yOffset={-6.5} />}
+            {portfolioData && portfolioData.map((project, idx: number) => { return (<Project project={project} key={project["id"]["N"]} yOffset={-(idx * 8) - 12} />) })}
+            {portfolioData && <Contact yOffset={-(portfolioData.length * 8) - 10} />}
+            <Environment resolution={32}>
+              <group rotation={[0, 0, 0]}>
+                <Lightformer intensity={20} rotation-x={Math.PI / 2} position={[0, 5, -9]} scale={[10, 10, 1]} />
+                <Lightformer intensity={20} position={[0, 5, 9]} scale={[10, 10, 1]} />
+                <Lightformer intensity={20} position={[0, 0, 0]} scale={[1, 1, 1]} />
+                <Lightformer type="ring" intensity={2} rotation-y={Math.PI / 2} position={[0, 0, 10]} scale={10} />
+              </group>
+            </Environment>
+            <ScrollPanCam />
+          </Canvas>
+        </>
+      )}
     </>
-  ) : (
-    <LoadingView />
   )
 
 }
