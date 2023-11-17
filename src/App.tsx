@@ -14,6 +14,7 @@ import LandingWelcome from './components/LandingWelcome';
 import Project from './components/Project';
 import Biography from './components/Biography';
 import Contact from './components/Contact';
+import LoadingView from './components/LoadingView';
 
 function App() {
 
@@ -66,7 +67,15 @@ function App() {
   }
 
   const [portfolioData, setPortfolioData] = useState<null | portfolioDataT[]>(null)
+  const [websiteLoaded, setWebsiteLoaded] = useState<boolean>(false)
   const [bioData, setBioData] = useState<null | bioDataT>(null)
+
+  useEffect(() => {
+    (async () => {
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setWebsiteLoaded(true)
+    })();
+  }, [portfolioData])
 
   useEffect(() => {
     axios({
@@ -111,14 +120,14 @@ function App() {
     starPositions.push(randomPosition);
   }
 
-  return portfolioData ? (
+  return websiteLoaded ? (
     <>
       <Canvas orthographic camera={{ position: [-2, 2, 5], zoom: 80 }} gl={{ preserveDrawingBuffer: true }} style={{ background: "black" }}>
         {starPositions.map((position, key) => { return (<Star position={position} key={key} />) })}
         <LandingWelcome />
         {bioData && <Biography bio={bioData} yOffset={-6.5} />}
-        {portfolioData.map((project, idx: number) => { return (<Project project={project} key={project["id"]["N"]} yOffset={-(idx * 8) - 12} />) })}
-        <Contact yOffset={-(portfolioData.length * 8) - 10} />
+        {portfolioData && portfolioData.map((project, idx: number) => { return (<Project project={project} key={project["id"]["N"]} yOffset={-(idx * 8) - 12} />) })}
+        {portfolioData && <Contact yOffset={-(portfolioData.length * 8) - 10} />}
         <Environment resolution={32}>
           <group rotation={[0, 0, 0]}>
             <Lightformer intensity={20} rotation-x={Math.PI / 2} position={[0, 5, -9]} scale={[10, 10, 1]} />
@@ -131,7 +140,7 @@ function App() {
       </Canvas>
     </>
   ) : (
-    <h1>Loading...</h1>
+    <LoadingView />
   )
 
 }

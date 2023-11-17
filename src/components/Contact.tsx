@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import './Contact.css'
 import Icon from "./3DIcon";
 import axios from "axios";
-import { sub } from "three/examples/jsm/nodes/Nodes.js";
 
 interface ContactFormState {
   firstName: string;
