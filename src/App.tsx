@@ -19,51 +19,23 @@ import LoadingView from './components/LoadingView';
 function App() {
 
   interface portfolioDataT {
-    id: {
-      N: string
-    },
-    orderIdx: {
-      N: string
-    },
-    type: {
-      S: string
-    },
-    projectHeading: {
-      S: string
-    },
-    projectSubtitle: {
-      S: string
-    },
-    projectDescription: {
-      S: string
-    },
-    projectLink: {
-      S: string
-    },
-    projectIcons: {
-      SS: [string]
-    },
-    projectPicUrl: {
-      S: string
-    }
+    id: { N: string },
+    orderIdx: { N: string },
+    type: { S: string },
+    projectHeading: { S: string },
+    projectSubtitle: { S: string },
+    projectDescription: { S: string },
+    projectLink: { S: string },
+    projectIcons: { SS: [string] },
+    projectPicS3Key: { S: string }
   }
 
   interface bioDataT {
-    id: {
-      N: string
-    },
-    orderIdx: {
-      N: string
-    },
-    type: {
-      S: string
-    },
-    pictureUrl: {
-      S: string
-    },
-    bioText: {
-      S: string
-    }
+    id: { N: string },
+    orderIdx: { N: string },
+    type: { S: string },
+    pictureS3Key: { S: string },
+    bioText: { S: string }
   }
 
   const [portfolioData, setPortfolioData] = useState<null | portfolioDataT[]>(null)

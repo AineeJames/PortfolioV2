@@ -1,67 +1,42 @@
 import { Text3D, Image } from "@react-three/drei"
-import axios from "axios"
 import { useEffect, useState } from "react"
 import Icon from "./3DIcon"
+import { getS3Image } from "../util/s3utils"
+import { S3ImageBlob } from "../interfaces/interfaces"
 
 interface BiographyProps {
   bio: {
-    id: {
-      N: string
-    },
-    orderIdx: {
-      N: string
-    },
-    type: {
-      S: string
-    },
-    pictureUrl: {
-      S: string
-    },
-    bioText: {
-      S: string
-    }
+    id: { N: string },
+    orderIdx: { N: string },
+    type: { S: string },
+    pictureS3Key: { S: string },
+    bioText: { S: string }
   },
   yOffset: number
 }
 
 function Biography({ bio, yOffset }: BiographyProps) {
 
-  const [imgUrl, setImgUrl] = useState<string | null>(null)
-  const [imgWidth, setImgWidth] = useState<number>(0)
-  const [imgHeight, setImgHeight] = useState<number>(0)
+  const [bioImg, setBioImg] = useState<null | S3ImageBlob>(null)
 
-  const aspectRatio = imgWidth && imgHeight ? imgWidth / imgHeight : 1;
+  useEffect(() => {
+    const getBioImg = async () => {
+      const img = await getS3Image("personal-portfolio-pics", bio.pictureS3Key.S)
+      setBioImg(img)
+    }
+    getBioImg()
+  }, []);
+
+  const aspectRatio = bioImg?.width && bioImg.height ? bioImg.width / bioImg.height : 1;
   const desiredWidth = 3.5;
   const desiredHeight = desiredWidth / aspectRatio;
 
-  const getWH = async (blob: Blob) => {
-    const bmp = await createImageBitmap(blob);
-    const { width, height } = bmp;
-    bmp.close();
-    setImgWidth(width)
-    setImgHeight(height)
-  }
-
-  useEffect(() => {
-    axios({
-      method: "get",
-      url: bio.pictureUrl.S,
-      responseType: "blob",
-      withCredentials: false
-    })
-      .then(function(response) {
-        const imageUrl = URL.createObjectURL(response.data);
-        setImgUrl(imageUrl);
-        getWH(response.data)
-      });
-  }, []);
-
   return (
     <>
-      {imgUrl && <Image
+      {bioImg?.url && <Image
         position={[-5.5, yOffset, -2]}
         scale={[desiredWidth, desiredHeight]}
-        url={imgUrl}
+        url={bioImg.url}
       />}
       <Icon
         icon={"wave"}
