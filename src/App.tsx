@@ -25,6 +25,8 @@ function App() {
   const [portfolioData, setPortfolioData] = useState<null | portfolioDataT[]>(null)
   const [websiteLoaded, setWebsiteLoaded] = useState<boolean>(false)
   const [bioData, setBioData] = useState<null | bioDataT>(null)
+  const [zoomLevel, setZoomLevel] = useState<number>(80)
+  const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth)
 
   useEffect(() => {
     if (portfolioData !== null) {
@@ -56,34 +58,50 @@ function App() {
     })
   }, [])
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      if (windowWidth < 1400) setZoomLevel(45)
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [windowWidth]);
+
   const starPositions: Array<[number, number, number]> = [];
   for (let i = 0; i < 500; i++) {
     const randomPosition = getRandomPosition(-15, 15, 10, -55, -10, -3);
     starPositions.push(randomPosition);
   }
 
-  let zoomLevel = 80
-  if (window.innerWidth < 1400) zoomLevel = 45
-
   return !websiteLoaded ? (
     <LoadingView />
   ) : (
-    <Canvas orthographic camera={{ position: [-2, 2, 5], zoom: zoomLevel }} style={{ background: "black" }}>
-      {starPositions.map((position, key) => { return (<Star position={position} key={key} />) })}
-      <LandingWelcome />
-      {bioData && <Biography bio={bioData} yOffset={-6.5} />}
-      {portfolioData && portfolioData.map((project, idx: number) => { return (<Project project={project} key={project["id"]["N"]} yOffset={-(idx * 8) - 12} />) })}
-      {(zoomLevel === 80) && portfolioData && <Contact yOffset={-(portfolioData.length * 8) - 10} />}
-      <Environment resolution={32}>
-        <group rotation={[0, 0, 0]}>
-          <Lightformer intensity={20} rotation-x={Math.PI / 2} position={[0, 5, -9]} scale={[10, 10, 1]} />
-          <Lightformer intensity={20} position={[0, 5, 9]} scale={[10, 10, 1]} />
-          <Lightformer intensity={20} position={[0, 0, 0]} scale={[1, 1, 1]} />
-          <Lightformer type="ring" intensity={2} rotation-y={Math.PI / 2} position={[0, 0, 10]} scale={10} />
-        </group>
-      </Environment>
-      <ScrollPanCam />
-    </Canvas>
+    <>
+      {(windowWidth > 500) ? <Canvas orthographic camera={{ position: [-2, 2, 5], zoom: zoomLevel }} style={{ background: "black" }}>
+        {starPositions.map((position, key) => { return (<Star position={position} key={key} />) })}
+        <LandingWelcome />
+        {bioData && <Biography bio={bioData} yOffset={-6.5} />}
+        {portfolioData && portfolioData.map((project, idx: number) => { return (<Project project={project} key={project["id"]["N"]} yOffset={-(idx * 8) - 12} />) })}
+        {(zoomLevel === 80) && portfolioData && <Contact yOffset={-(portfolioData.length * 8) - 10} />}
+        <Environment resolution={32}>
+          <group rotation={[0, 0, 0]}>
+            <Lightformer intensity={20} rotation-x={Math.PI / 2} position={[0, 5, -9]} scale={[10, 10, 1]} />
+            <Lightformer intensity={20} position={[0, 5, 9]} scale={[10, 10, 1]} />
+            <Lightformer intensity={20} position={[0, 0, 0]} scale={[1, 1, 1]} />
+            <Lightformer type="ring" intensity={2} rotation-y={Math.PI / 2} position={[0, 0, 10]} scale={10} />
+          </group>
+        </Environment>
+        <ScrollPanCam />
+      </Canvas> :
+        <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%, -50%)" }}>
+          <p style={{ color: "white", fontFamily: "arial", textAlign: 'center' }}>
+            View too small! Rotate device or view on a larger screen!
+          </p>
+        </div>
+      }
+    </>
   )
 
 }
