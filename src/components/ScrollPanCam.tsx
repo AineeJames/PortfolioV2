@@ -22,7 +22,7 @@ function ScrollPanCam() {
   }
 
   const handleTouchMove = (event: TouchEvent) => {
-    const deltaY = event.touches[0].clientY - touchStartY;
+    const deltaY = touchStartY - event.touches[0].clientY
     const newScrollY = THREE.MathUtils.clamp(scrollY + deltaY * 0.1, 0, 1000);
     setScrollY(newScrollY);
   };
