@@ -26,11 +26,11 @@ function LandingWelcome() {
         {"Aiden Olsen"}
         <MeshTransmissionMaterial
           samples={32}
-          resolution={256}
-          thickness={0.3}
+          resolution={128}
+          thickness={0.5}
           distortion={0.7}
           roughness={0.5}
-          distortionScale={0.1}
+          distortionScale={0.01}
           temporalDistortion={0.5}
           color={"#f0f"}
           backside={true}

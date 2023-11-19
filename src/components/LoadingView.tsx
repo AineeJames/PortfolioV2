@@ -1,6 +1,7 @@
 import React from 'react';
 
-const LoadingView: React.FC = () => {
+function LoadingView() {
+
   const containerStyle: React.CSSProperties = {
     display: 'flex',
     alignItems: 'center',
@@ -10,11 +11,11 @@ const LoadingView: React.FC = () => {
     backgroundColor: 'black',
     color: 'white',
     fontFamily: 'Arial, sans-serif',
-  };
+  }
 
   const spinnerContainerStyle: React.CSSProperties = {
     textAlign: 'center',
-  };
+  }
 
   const spinnerStyle: React.CSSProperties = {
     border: '4px solid rgba(255, 255, 255, 0.3)',
@@ -24,7 +25,7 @@ const LoadingView: React.FC = () => {
     height: '40px',
     animation: 'spin 1s linear infinite',
     marginBottom: '16px',
-  };
+  }
 
   return (
     <div style={containerStyle}>
@@ -32,16 +33,15 @@ const LoadingView: React.FC = () => {
         <div style={spinnerStyle}></div>
       </div>
       <style>
-        {`
-          @keyframes spin {
+        {`@keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
-          }
-       `}
+          }`}
       </style>
     </div>
-  );
-};
+  )
+
+}
 
 export default LoadingView;
 

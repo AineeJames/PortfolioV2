@@ -25,7 +25,7 @@ function Biography({ bio, yOffset }: BiographyProps) {
       setBioImg(img)
     }
     getBioImg()
-  }, []);
+  }, [bio.pictureS3Key]);
 
   const aspectRatio = bioImg?.width && bioImg.height ? bioImg.width / bioImg.height : 1;
   const desiredWidth = 3.5;

@@ -3,16 +3,16 @@ import { useEffect, useState } from "react";
 import './Contact.css'
 import Icon from "./3DIcon";
 import axios from "axios";
+import { ContactFormState, ContactProps } from "../interfaces/interfaces";
 
-interface ContactFormState {
-  firstName: string;
-  lastName: string;
-  email: string;
-  message: string;
-  [key: string]: string;
-}
 
-function Contact({ yOffset }: { yOffset: number }) {
+function Contact({ yOffset }: ContactProps) {
+
+  const bttnColors = {
+    norm: "#007bff",
+    good: "#40a020",
+    bad: "#ae0101"
+  }
 
   const defaultFormState: ContactFormState = {
     firstName: "",
@@ -22,7 +22,7 @@ function Contact({ yOffset }: { yOffset: number }) {
   }
 
   const [formState, setFormState] = useState<ContactFormState>(defaultFormState)
-  const [submitColor, setSubmitColor] = useState<string>("#007bff")
+  const [submitColor, setSubmitColor] = useState<string>(bttnColors.norm)
   const [canSubmit, setCanSubmit] = useState<boolean>(false)
   const [submitStatus, setSubmitStatus] = useState<null | string>(null)
 
@@ -40,10 +40,10 @@ function Contact({ yOffset }: { yOffset: number }) {
       (async () => {
         await new Promise(resolve => setTimeout(resolve, 5000));
         setSubmitStatus(null)
-        setSubmitColor("#007bff")
+        setSubmitColor(bttnColors.norm)
       })();
     }
-  }, [submitStatus])
+  }, [submitStatus, bttnColors.norm])
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -69,18 +69,18 @@ function Contact({ yOffset }: { yOffset: number }) {
             setSubmitStatus(`Could not submit, ${response.status}.`)
           }
           setSubmitColor(() => {
-            if (submitStatus === null) return "#007bff"
-            else if (submitStatus === 200) return "#40a020"
-            else return "#ae0101"
+            if (submitStatus === null) return bttnColors.norm
+            else if (submitStatus === 200) return bttnColors.good
+            else return bttnColors.bad
           })
         })
         .catch(() => {
           setSubmitStatus("Could not submit, try again.")
-          setSubmitColor("#ae0101")
+          setSubmitColor(bttnColors.bad)
         })
     } else {
       setSubmitStatus("There are missing fields.")
-      setSubmitColor("#ae0101")
+      setSubmitColor(bttnColors.bad)
     }
   };
 
@@ -132,7 +132,6 @@ function Contact({ yOffset }: { yOffset: number }) {
               />
             </div>
           </div>
-
           <div className="form-group">
             <label htmlFor="email">Email:</label>
             <input
@@ -145,7 +144,6 @@ function Contact({ yOffset }: { yOffset: number }) {
               className="input-field"
             />
           </div>
-
           <div className="form-group">
             <label htmlFor="message">Message:</label>
             <textarea
@@ -157,7 +155,6 @@ function Contact({ yOffset }: { yOffset: number }) {
               className="input-field"
             />
           </div>
-
           <div style={{ display: "flex", flexDirection: "row", alignItems: "center" }}>
             <button type="submit" onClick={handleSubmit} className="submit-button" style={{ background: submitColor }}>
               Submit
@@ -165,7 +162,7 @@ function Contact({ yOffset }: { yOffset: number }) {
             {submitStatus && <p style={{ marginLeft: 20 }}>{submitStatus}</p>}
           </div>
         </div>
-      </Html >
+      </Html>
     </>
   )
 

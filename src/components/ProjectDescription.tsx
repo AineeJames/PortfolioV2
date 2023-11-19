@@ -1,15 +1,6 @@
 import { Text3D } from "@react-three/drei"
 import { ReactNode, useState } from "react"
-
-interface ProjectDescriptionProps {
-  text: string,
-  startOffset: [number, number, number]
-}
-
-interface LinkProps {
-  url: string
-  pos: [number, number, number]
-}
+import { LinkProps, ProjectDescriptionProps } from "../interfaces/interfaces"
 
 function Link({ url, pos }: LinkProps) {
 
@@ -30,6 +21,7 @@ function Link({ url, pos }: LinkProps) {
       <meshStandardMaterial color={!hov ? "#00a" : "#fff"} />
     </Text3D>
   )
+
 }
 
 function parseDescription(text: string, offset: [number, number, number]): ReactNode[] {
@@ -76,11 +68,9 @@ function parseDescription(text: string, offset: [number, number, number]): React
 }
 
 function ProjectDescription({ text, startOffset }: ProjectDescriptionProps) {
-
   return (
-    parseDescription(text, startOffset).map((elem: ReactNode) => elem)
+    parseDescription(text, startOffset).map((elem) => elem)
   )
-
 }
 
 export default ProjectDescription

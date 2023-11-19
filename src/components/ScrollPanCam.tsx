@@ -1,9 +1,6 @@
 import { useRef, useState } from 'react'
 import * as THREE from 'three'
-import {
-  useFrame,
-  useThree
-} from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 
 function ScrollPanCam() {
 
@@ -11,34 +8,29 @@ function ScrollPanCam() {
   const { camera } = useThree();
   const target = useRef(new THREE.Vector3(0, 0, 0));
 
+  const pan_factor = 3;
+  const easeFactor = 0.05;
+
   window.onwheel = (event: WheelEvent) => {
     const newScrollY = THREE.MathUtils.clamp(scrollY + (event.deltaY * 0.5), 0, 1000)
     setScrollY(newScrollY)
   }
 
   useFrame((state) => {
-    const pan_factor = 3;
     const targetPosition = new THREE.Vector3(
       Math.sin(state.pointer.x / 4) * pan_factor,
-      state.pointer.y / 5, // Adjust this factor based on how much you want the vertical movement
+      state.pointer.y / (pan_factor + 2),
       Math.cos(state.pointer.x / 4) * pan_factor
     );
-
-    const easeFactor = 0.05;
-
     const newY = -scrollY * 0.05;
-    targetPosition.y += newY; // Add the vertical scrolling adjustment
-
+    targetPosition.y += newY;
     camera.position.lerp(targetPosition, easeFactor);
-
-    const lookAtTarget = new THREE.Vector3(0, newY, -10); // Assuming -10 is the desired forward-looking distance
+    const lookAtTarget = new THREE.Vector3(0, newY, -10);
     target.current.lerp(lookAtTarget, easeFactor);
-
-
     camera.lookAt(target.current);
   });
 
-  return <></>;
+  return null;
 
 }
 

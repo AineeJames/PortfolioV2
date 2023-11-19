@@ -1,13 +1,9 @@
-import {
-  Text3D,
-} from '@react-three/drei'
+import { Text3D } from '@react-three/drei'
 import { useFrame } from '@react-three/fiber'
 import { useRef, useState } from 'react'
+import { IconProps } from '../interfaces/interfaces'
 
-interface lut {
-  [key: string]: string
-}
-const icon_lut: lut = {
+const icon_lut: { [key: string]: string } = {
   "github": "",
   "github2": "",
   "python": "",
@@ -19,18 +15,6 @@ const icon_lut: lut = {
   "aws": "",
   "wave": "",
   "email": ""
-}
-
-interface IconProps {
-  icon: string,
-  position: [number, number, number],
-  rotation?: [number, number, number],
-  visible?: boolean,
-  spin?: boolean,
-  size?: number,
-  color?: string,
-  hoverColor?: string,
-  action?: () => void
 }
 
 function Icon({
@@ -66,7 +50,7 @@ function Icon({
       ref={linkRef}
       height={0}
     >
-      {icon_lut[icon]}
+      {icon_lut[icon] ? icon_lut[icon] : "?"}
       <meshStandardMaterial color={hovered ? hoverColor : color} />
     </Text3D>
   ) : null

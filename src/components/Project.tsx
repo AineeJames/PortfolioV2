@@ -39,7 +39,7 @@ function Project({ project, yOffset }: ProjectProps) {
       }
       getProjImg()
     }
-  }, []);
+  }, [projectPicS3Key]);
 
   const aspectRatio = projImg?.width && projImg.height ? projImg.width / projImg.height : 1;
   const desiredWidth = 6.5;
