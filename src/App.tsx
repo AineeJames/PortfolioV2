@@ -85,7 +85,7 @@ function App() {
         <LandingWelcome />
         {bioData && <Biography bio={bioData} yOffset={-6.5} />}
         {portfolioData && portfolioData.map((project, idx: number) => { return (<Project project={project} key={project["id"]["N"]} yOffset={-(idx * 8) - 12} />) })}
-        {(zoomLevel === 80) && portfolioData && <Contact yOffset={-(portfolioData.length * 8) - 10} />}
+        {windowWidth > 1000 && portfolioData && <Contact yOffset={-(portfolioData.length * 8) - 10} />}
         <Environment resolution={32}>
           <group rotation={[0, 0, 0]}>
             <Lightformer intensity={20} rotation-x={Math.PI / 2} position={[0, 5, -9]} scale={[10, 10, 1]} />

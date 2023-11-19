@@ -103,7 +103,7 @@ function Contact({ yOffset }: ContactProps) {
       </Text3D>
       <Html
         center
-        position={[0, yOffset - 3.6, 0]}
+        position={[0, yOffset - 4.2, 0]}
       >
         <style>
           @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,700;1,400&display=swap');

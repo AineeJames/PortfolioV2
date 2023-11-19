@@ -13,6 +13,7 @@ function LandingWelcome() {
         position={[0, 1.3, 0]}
         rotation={[0.4, 0.4, 0]}
         size={0.5}
+        height={0}
       >
         {"Hi! I'm"}
         <meshStandardMaterial color={"#888"} />
