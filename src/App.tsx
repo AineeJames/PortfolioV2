@@ -62,15 +62,18 @@ function App() {
     starPositions.push(randomPosition);
   }
 
+  let zoomLevel = 80
+  if (window.innerWidth < 1400) zoomLevel = 45
+
   return !websiteLoaded ? (
     <LoadingView />
   ) : (
-    <Canvas orthographic camera={{ position: [-2, 2, 5], zoom: 80 }} style={{ background: "black" }}>
+    <Canvas orthographic camera={{ position: [-2, 2, 5], zoom: zoomLevel }} style={{ background: "black" }}>
       {starPositions.map((position, key) => { return (<Star position={position} key={key} />) })}
       <LandingWelcome />
       {bioData && <Biography bio={bioData} yOffset={-6.5} />}
       {portfolioData && portfolioData.map((project, idx: number) => { return (<Project project={project} key={project["id"]["N"]} yOffset={-(idx * 8) - 12} />) })}
-      {portfolioData && <Contact yOffset={-(portfolioData.length * 8) - 10} />}
+      {(zoomLevel === 80) && portfolioData && <Contact yOffset={-(portfolioData.length * 8) - 10} />}
       <Environment resolution={32}>
         <group rotation={[0, 0, 0]}>
           <Lightformer intensity={20} rotation-x={Math.PI / 2} position={[0, 5, -9]} scale={[10, 10, 1]} />
