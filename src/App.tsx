@@ -59,9 +59,10 @@ function App() {
   }, [])
 
   useEffect(() => {
+    setZoomLevel(70)
+    if (windowWidth < 1400) setZoomLevel(45)
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
-      if (windowWidth < 1400) setZoomLevel(45)
     };
     window.addEventListener('resize', handleResize);
     return () => {
